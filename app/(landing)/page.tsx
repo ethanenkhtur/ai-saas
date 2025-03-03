@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 export default function Landing() {
-    return <div>Dashboard (Unprotected)</div>;
+    return <Button size={"lg"}>Click</Button>;
 }
