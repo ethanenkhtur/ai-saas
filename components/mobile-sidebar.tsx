@@ -14,7 +14,8 @@ import Sidebar from "@/components/sidebar";
 export default function MobileSidebar() {
     return (
         <Sheet>
-            <SheetTrigger>
+            {/* adding asChild property below fixes the error of HTML Button Hydration error */}
+            <SheetTrigger asChild>
                 <Button
                     variant={"ghost"}
                     size={"icon"}
