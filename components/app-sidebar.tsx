@@ -20,6 +20,7 @@ import {
     Settings,
     VideoIcon,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const items = [
@@ -69,7 +70,25 @@ const items = [
 export function AppSidebar() {
     return (
         <Sidebar>
-            <SidebarHeader />
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <Link
+                            href={"/dashboard"}
+                            className="flex items-center ml-3 px-2 py-4"
+                        >
+                            <Image
+                                src={"/logo.png"}
+                                alt="Logo"
+                                height={35}
+                                width={35}
+                                className="mr-4"
+                            />
+                            <h1 className="text-2xl font-bold">Alldo</h1>
+                        </Link>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>
