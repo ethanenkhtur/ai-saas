@@ -96,7 +96,7 @@ export function AppSidebar() {
                             {items.map((item) => (
                                 <SidebarMenuItem
                                     key={item.title}
-                                    className="ml-3"
+                                    className="ml-2"
                                 >
                                     <SidebarMenuButton asChild>
                                         <Link href={item.route}>
