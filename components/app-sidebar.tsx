@@ -11,6 +11,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 import {
     Code,
     ImageIcon,
@@ -22,6 +23,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const items = [
     {
@@ -68,6 +70,8 @@ const items = [
 ];
 
 export function AppSidebar() {
+    const pathname = usePathname();
+
     return (
         <Sidebar>
             <SidebarHeader>
@@ -98,7 +102,10 @@ export function AppSidebar() {
                                     key={item.title}
                                     className="ml-2"
                                 >
-                                    <SidebarMenuButton asChild>
+                                    <SidebarMenuButton
+                                        asChild
+                                        isActive={pathname === item.route}
+                                    >
                                         <Link href={item.route}>
                                             <item.icon className={item.color} />
                                             <span>{item.title}</span>

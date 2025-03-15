@@ -71,9 +71,8 @@ export default function Dashboard() {
             </header>
             <main className="space-y-4">
                 {tools.map((tool) => (
-                    <div className="px-10">
+                    <div className="px-10" key={tool.href}>
                         <Link
-                            key={tool.href}
                             href={tool.href}
                             className="flex flex-col max-w-lg md:max-w-xl mx-auto"
                         >
