@@ -19,7 +19,7 @@ export default function Heading({
     } = tools.find((tool) => tool.href === pathname)!;
 
     return (
-        <header className="p-4 lg:px-8 flex items-center gap-x-4">
+        <header className="p-4 lg:px-8 flex items-center gap-x-4 mx-auto">
             <div className={cn(bgColor, "p-2 rounded-md")}>
                 <Icon className={cn(color, "w-8 h-8")} />
             </div>
