@@ -11,7 +11,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
 import {
     Code,
     ImageIcon,
@@ -73,7 +72,7 @@ export function AppSidebar() {
     const pathname = usePathname();
 
     return (
-        <Sidebar>
+        <Sidebar variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>

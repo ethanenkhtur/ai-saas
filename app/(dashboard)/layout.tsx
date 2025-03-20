@@ -16,10 +16,10 @@ export default function DashboardLayout({
             <AppSidebar />
             <SidebarInset>
                 <nav className="flex h-16 shrink-0 items-center justify-between gap-2 px-4">
-                    <SidebarTrigger className="-ml-1" />
+                    <SidebarTrigger className="-ml-1 md:invisible" />
                     <UserButton />
                 </nav>
-                <main>{children}</main>
+                {children}
             </SidebarInset>
         </SidebarProvider>
     );
