@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
+import { SignInButton } from "@clerk/nextjs";
 
 export default function Landing() {
-    return <Button size={"lg"}>Click</Button>;
+    return <SignInButton />;
 }

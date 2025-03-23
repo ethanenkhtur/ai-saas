@@ -1,9 +1,13 @@
 "use client";
 
+import axios from "axios";
 import { z } from "zod";
 import { MessagesSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { formSchema } from "./constants";
 
@@ -19,8 +23,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function ConversationPage() {
-    type UserFormData = z.infer<typeof formSchema>;
+    // useRouter from next js to refresh route after onsubmit
+    const route = useRouter();
 
+    // state variable messages to add user and api content to the page with useState
+    const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
+
+    type UserFormData = z.infer<typeof formSchema>;
     const form = useForm<UserFormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -28,8 +37,41 @@ export default function ConversationPage() {
         },
     });
 
-    const isSubmitting = form.formState.isSubmitted;
-    const onSubmit = (values: UserFormData) => console.log(values);
+    // whether a submission is in process; prop of react hook form
+    const isLoading = form.formState.isSubmitting;
+    console.log("isSubmimtting:", isLoading);
+
+    const onSubmit = async (values: UserFormData) => {
+        try {
+            // model for the user's prompt to send to api
+            const userMessage: ChatCompletionMessageParam = {
+                role: "user",
+                content: values.prompt,
+            };
+
+            // combine userMessage with overall message state array
+            const newMessages = [...messages, userMessage];
+            // update state with updated values;
+            setMessages(newMessages);
+
+            // request to api
+            const response = await axios.post("/api/conversation", {
+                messages: newMessages,
+            });
+
+            // updates the state after response from api
+            setMessages((current) => [...current, response.data]);
+
+            // resets form after successful response to enable another submission; prevents user to make additional submission while one is processing
+            form.reset();
+        } catch (error: unknown) {
+            // TODO: Add Pro Model
+            console.error(error);
+        } finally {
+            route.refresh();
+            console.log("route is refreshed");
+        }
+    };
 
     return (
         <>
@@ -56,7 +98,7 @@ export default function ConversationPage() {
                                         <FormControl className="m-0 p-0">
                                             <Input
                                                 className="border-0 outline-none shadow-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:shadow-none"
-                                                disabled={isSubmitting}
+                                                disabled={isLoading}
                                                 placeholder="How do I calculate the radius of a circle?"
                                                 {...field}
                                             />
@@ -67,14 +109,24 @@ export default function ConversationPage() {
                             />
                             <Button
                                 className="col-span-12 lg:col-span-2 w-full"
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                             >
                                 Generate
                             </Button>
                         </form>
                     </Form>
                 </section>
-                <section className="mt-4">Messages Content</section>
+                <section className="space-y-4 mt-4">
+                    <div className="flex flex-col gap-y-4">
+                        {messages.map((message, index) => (
+                            <div key={index}>
+                                {typeof message.content === "string"
+                                    ? message.content
+                                    : "Content not available"}
+                            </div>
+                        ))}
+                    </div>
+                </section>
             </main>
         </>
     );
