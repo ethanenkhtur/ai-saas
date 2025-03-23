@@ -85,7 +85,7 @@ export default function Sidebar() {
                             montserrat.className
                         )}
                     >
-                        Alldo
+                        Cando
                     </h1>
                 </Link>
                 <div className="space-y-1">

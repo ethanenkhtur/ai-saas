@@ -21,6 +21,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Empty from "@/components/empty";
+import Loader from "@/components/loader";
+import { cn } from "@/lib/utils";
+import UserAvatar from "@/components/user-avatar";
+import BotAvatar from "@/components/bot-avatar";
 
 export default function ConversationPage() {
     // useRouter from next js to refresh route after onsubmit
@@ -117,15 +122,39 @@ export default function ConversationPage() {
                     </Form>
                 </section>
                 <section className="space-y-4 mt-4">
+                    {messages.length === 0 && !isLoading && (
+                        <Empty label="No conversation started" />
+                    )}
+
                     <div className="flex flex-col gap-y-4">
                         {messages.map((message, index) => (
-                            <div key={index}>
-                                {typeof message.content === "string"
-                                    ? message.content
-                                    : "Content not available"}
+                            <div
+                                key={index}
+                                className={cn(
+                                    "p-8 w-full flex items-start gap-x-8 rounded-lg",
+                                    message.role === "user"
+                                        ? "bg-white border border-black/10"
+                                        : "bg-muted"
+                                )}
+                            >
+                                {message.role === "user" ? (
+                                    <UserAvatar />
+                                ) : (
+                                    <BotAvatar />
+                                )}
+                                <p className="text-sm">
+                                    {typeof message.content === "string"
+                                        ? message.content
+                                        : "Content  not available"}
+                                </p>
                             </div>
                         ))}
                     </div>
+                    {isLoading && (
+                        <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
+                            <Loader />
+                        </div>
+                    )}
                 </section>
             </main>
         </>
