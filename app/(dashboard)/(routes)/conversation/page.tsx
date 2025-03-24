@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 import Heading from "@/components/heading";
 import {
@@ -14,8 +15,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 export default function ConversationPage() {
+    const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
+
     // creating zod form schema to validate input
     const formSchema = z.object({
         prompt: z.string().min(1, "Prompt is required"),
@@ -31,8 +36,59 @@ export default function ConversationPage() {
     });
 
     // on prompt submit
-    function onSubmit(values: UserFormData) {
-        console.log(values);
+    async function onSubmit(values: UserFormData) {
+        const submitCount = form.formState.submitCount;
+
+        const userMessage: ChatCompletionMessageParam = {
+            role: "user",
+            content: values.prompt,
+        };
+
+        // append user message to allMessages
+        let allMessages: ChatCompletionMessageParam[] = [
+            ...messages,
+            userMessage,
+        ];
+        setMessages(allMessages);
+
+        let response = null;
+        let aiResponse: ChatCompletionMessageParam;
+
+        // logic to pass in entire conversation state to OpenAI API
+        if (submitCount === 0) {
+            try {
+                // first request for a given conversation
+                response = await axios.post("/api/conversation", [userMessage]);
+
+                // records the ai response to later append to allMessages
+                aiResponse = {
+                    role: "assistant",
+                    content: response.data,
+                };
+
+                // append aiResponse to allMessages
+                allMessages = [...allMessages, aiResponse];
+                // update state and state variable messages
+                setMessages(allMessages);
+            } catch (error) {
+                console.error("Error posting to /api/conversation", error);
+            }
+        } else {
+            // since not first request, starts another request with appended ai response to allMessages
+            response = await axios.post("/api/conversation", allMessages);
+
+            aiResponse = {
+                role: "assistant",
+                content: response.data,
+            };
+
+            // a cycle to keep adding ai response after user message up top
+            allMessages = [...allMessages, aiResponse];
+            setMessages(allMessages);
+        }
+
+        // reset form state
+        form.reset();
     }
 
     return (
@@ -41,7 +97,7 @@ export default function ConversationPage() {
                 title="Conversation AI"
                 description={"The most inspiring conversation you can think of"}
             />
-            <main className="px-4 items-center">
+            <main className="px-4">
                 <section>
                     <Form {...form}>
                         <form
@@ -73,6 +129,15 @@ export default function ConversationPage() {
                             </Button>
                         </form>
                     </Form>
+                </section>
+                <section className="space-y-3">
+                    {/* {messages.map((message, index) => (
+                        <div key={index}>
+                            {typeof message.content === "string"
+                                ? message.content
+                                : "Content not available"}
+                        </div>
+                    ))} */}
                 </section>
             </main>
         </>
