@@ -110,7 +110,7 @@ export default function ConversationPage() {
                 title="Conversation AI"
                 description={"The most inspiring conversation you can think of"}
             />
-            <main className="px-4">
+            <main className="px-4 space-y-10">
                 <section className="max-w-3xl mx-auto">
                     <Form {...form}>
                         <form
@@ -144,7 +144,7 @@ export default function ConversationPage() {
                         </form>
                     </Form>
                 </section>
-                <section className="space-y-3 mt-6 mx-auto max-w-3xl">
+                <section className="space-y-3 mx-auto max-w-3xl">
                     {messages.map((message, index) => (
                         <div
                             key={index}
