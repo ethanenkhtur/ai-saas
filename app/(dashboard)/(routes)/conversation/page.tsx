@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 import Heading from "@/components/heading";
@@ -23,6 +23,7 @@ import BotAvatar from "@/components/bot-avatar";
 
 export default function ConversationPage() {
     const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
     // creating zod form schema to validate input
     const formSchema = z.object({
@@ -96,6 +97,11 @@ export default function ConversationPage() {
 
     const isSubmitting: boolean = form.formState.isSubmitting;
 
+    useEffect(
+        () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }),
+        [messages]
+    );
+
     return (
         <>
             <Heading
@@ -154,6 +160,7 @@ export default function ConversationPage() {
                         </div>
                     ))}
                     {isSubmitting && <Loader />}
+                    <div ref={messagesEndRef} />
                 </section>
             </main>
         </>
