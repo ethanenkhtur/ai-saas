@@ -40,10 +40,10 @@ export default function ConversationPage() {
         },
     });
 
+    const submitCount = form.formState.submitCount;
+
     // on prompt submit
     async function onSubmit(values: UserFormData) {
-        const submitCount = form.formState.submitCount;
-
         const userMessage: ChatCompletionMessageParam = {
             role: "user",
             content: values.prompt,
@@ -168,6 +168,11 @@ export default function ConversationPage() {
                     {isSubmitting && <Loader />}
                     <div ref={messagesEndRef} />
                 </section>
+                {submitCount === 0 && !isSubmitting && (
+                    <p className="flex flex-col h-full items-center justify-center text-sm">
+                        No conversation started.
+                    </p>
+                )}
             </main>
         </>
     );
