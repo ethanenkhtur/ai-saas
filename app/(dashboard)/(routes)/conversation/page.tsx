@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
+import { cn } from "@/lib/utils";
+import Loader from "@/components/loader";
 
 export default function ConversationPage() {
     const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
@@ -91,6 +93,8 @@ export default function ConversationPage() {
         form.reset();
     }
 
+    const isSubmitting: boolean = form.formState.isSubmitting;
+
     return (
         <>
             <Heading
@@ -98,7 +102,7 @@ export default function ConversationPage() {
                 description={"The most inspiring conversation you can think of"}
             />
             <main className="px-4">
-                <section>
+                <section className="max-w-3xl mx-auto">
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
@@ -124,20 +128,30 @@ export default function ConversationPage() {
                             <Button
                                 type="submit"
                                 className="col-span-12 cursor-pointer lg:col-span-2 lg:self-end"
+                                disabled={isSubmitting}
                             >
                                 Generate
                             </Button>
                         </form>
                     </Form>
                 </section>
-                <section className="space-y-3">
-                    {/* {messages.map((message, index) => (
-                        <div key={index}>
+                <section className="space-y-3 mt-6 mx-auto max-w-3xl">
+                    {messages.map((message, index) => (
+                        <div
+                            key={index}
+                            className={cn(
+                                "rounded-md",
+                                message.role === "user"
+                                    ? "p-4 justify-self-end bg-gray-100"
+                                    : "justify-self-start "
+                            )}
+                        >
                             {typeof message.content === "string"
                                 ? message.content
-                                : "Content not available"}
+                                : "Content not loaded"}
                         </div>
-                    ))} */}
+                    ))}
+                    {isSubmitting && <Loader />}
                 </section>
             </main>
         </>
