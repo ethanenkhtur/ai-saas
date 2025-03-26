@@ -4,6 +4,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 import Heading from "@/components/heading";
 import {
@@ -15,10 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
-import { cn } from "@/lib/utils";
 import Loader from "@/components/loader";
+import BotAvatar from "@/components/bot-avatar";
 
 export default function ConversationPage() {
     const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
@@ -143,9 +144,10 @@ export default function ConversationPage() {
                                 "rounded-md",
                                 message.role === "user"
                                     ? "p-4 justify-self-end bg-gray-100"
-                                    : "justify-self-start "
+                                    : "flex gap-x-4 justify-self-start "
                             )}
                         >
+                            {message.role === "assistant" && <BotAvatar />}
                             {typeof message.content === "string"
                                 ? message.content
                                 : "Content not loaded"}
