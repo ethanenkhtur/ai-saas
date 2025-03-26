@@ -7,6 +7,7 @@ import axios from "axios";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
+import Markdown from "react-markdown";
 
 import Heading from "@/components/heading";
 import {
@@ -97,6 +98,7 @@ export default function ConversationPage() {
 
     const isSubmitting: boolean = form.formState.isSubmitting;
 
+    // whenever a new response comes in, it is scrolled into view
     useEffect(
         () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }),
         [messages]
@@ -154,9 +156,13 @@ export default function ConversationPage() {
                             )}
                         >
                             {message.role === "assistant" && <BotAvatar />}
-                            {typeof message.content === "string"
-                                ? message.content
-                                : "Content not loaded"}
+                            <div>
+                                {typeof message.content === "string" ? (
+                                    <Markdown>{message.content}</Markdown>
+                                ) : (
+                                    "Content not loaded"
+                                )}
+                            </div>
                         </div>
                     ))}
                     {isSubmitting && <Loader />}
