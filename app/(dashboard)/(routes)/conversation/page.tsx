@@ -20,7 +20,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/loader";
-import BotAvatar from "@/components/bot-avatar";
 
 export default function ConversationPage() {
     const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
@@ -149,13 +148,12 @@ export default function ConversationPage() {
                         <div
                             key={index}
                             className={cn(
-                                "rounded-md",
+                                "overflow-auto rounded-md",
                                 message.role === "user"
                                     ? "p-4 justify-self-end bg-gray-100"
                                     : "flex gap-x-4 justify-self-start "
                             )}
                         >
-                            {message.role === "assistant" && <BotAvatar />}
                             <div>
                                 {typeof message.content === "string" ? (
                                     <Markdown>{message.content}</Markdown>
