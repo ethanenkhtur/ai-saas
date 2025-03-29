@@ -12,13 +12,10 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
-    Code,
     ImageIcon,
     LayoutDashboard,
     MessageSquare,
-    Music,
     Settings,
-    VideoIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,24 +39,6 @@ const items = [
         icon: ImageIcon,
         route: "/image",
         color: "text-pink-700",
-    },
-    {
-        title: "Video Generation",
-        icon: VideoIcon,
-        route: "/video",
-        color: "text-orange-700",
-    },
-    {
-        title: "Music Generation",
-        icon: Music,
-        route: "/music",
-        color: "text-emerald-500",
-    },
-    {
-        title: "Code Generation",
-        icon: Code,
-        route: "/code",
-        color: "text-green-700",
     },
     {
         title: "Settings",
