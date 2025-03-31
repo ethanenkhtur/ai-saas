@@ -4,6 +4,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { amountOptions, resolutionOptions } from "./constants";
+import axios from "axios";
+import { useState } from "react";
 
 import Heading from "@/components/heading";
 import {
@@ -23,8 +25,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import Image from "next/image";
+import { Download } from "lucide-react";
 
 export default function ImagePage() {
+    const [images, setImages] = useState<string[]>([]);
+
     // creating zod form schema to validate input
     const formSchema = z.object({
         prompt: z.string().min(1, {
@@ -48,8 +55,24 @@ export default function ImagePage() {
     // on prompt submit
     async function onSubmit(values: UserFormData) {
         console.log(values);
-        // reset form state
-        form.reset();
+
+        setImages([]);
+
+        try {
+            const response = await axios.post("/api/image", values);
+            console.log(response.data);
+
+            const urls = response.data.map(
+                (image: { url: string }) => image.url
+            );
+
+            setImages(urls);
+
+            // reset form state
+            form.reset();
+        } catch (error) {
+            console.error("Error generating images:", error);
+        }
     }
 
     const isSubmitting: boolean = form.formState.isSubmitting;
@@ -59,7 +82,7 @@ export default function ImagePage() {
         <>
             <Heading
                 title="Image Generation"
-                description={"The most inspiring conversation you can think of"}
+                description="Only your imagination is the limit."
             />
             <main className="px-4 space-y-10">
                 <section className="max-w-xl mx-auto">
@@ -89,9 +112,13 @@ export default function ImagePage() {
                                 <FormField
                                     control={form.control}
                                     name="amount"
-                                    render={() => (
+                                    render={({ field }) => (
                                         <FormItem>
-                                            <Select>
+                                            <Select
+                                                disabled={isSubmitting}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                            >
                                                 <FormControl>
                                                     <SelectTrigger className="cursor-pointer">
                                                         <SelectValue placeholder="Number of images" />
@@ -123,9 +150,13 @@ export default function ImagePage() {
                                 <FormField
                                     control={form.control}
                                     name="resolution"
-                                    render={() => (
+                                    render={({ field }) => (
                                         <FormItem>
-                                            <Select>
+                                            <Select
+                                                disabled={isSubmitting}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                            >
                                                 <FormControl>
                                                     <SelectTrigger className="cursor-pointer">
                                                         <SelectValue placeholder="Pick a resolution" />
@@ -167,12 +198,39 @@ export default function ImagePage() {
                 </section>
                 <section className="space-y-3 mx-auto max-w-3xl">
                     {isSubmitting && <Loader />}
+                    {submitCount === 0 && !isSubmitting && (
+                        <p className="text-sm place-self-center">
+                            No image generated.
+                        </p>
+                    )}
+                    <div className="flex flex-wrap items-stretch justify-center gap-6">
+                        {images.map((src) => (
+                            <Card
+                                key={src}
+                                className="grow min-w-3xs max-w-md pt-0"
+                            >
+                                <CardContent className="relative aspect-square mt-0">
+                                    <Image
+                                        alt="image"
+                                        src={src}
+                                        fill
+                                        className="rounded-xl"
+                                    />
+                                </CardContent>
+                                <CardFooter>
+                                    <Button
+                                        onClick={() => window.open(src)}
+                                        className="w-full cursor-pointer"
+                                        variant={"outline"}
+                                    >
+                                        <Download />
+                                        Download
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        ))}
+                    </div>
                 </section>
-                {submitCount === 0 && !isSubmitting && (
-                    <p className="flex flex-col h-full items-center justify-center text-sm">
-                        No image generated.
-                    </p>
-                )}
             </main>
         </>
     );
