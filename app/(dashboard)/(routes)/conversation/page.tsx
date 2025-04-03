@@ -143,7 +143,7 @@ export default function ConversationPage() {
                         </form>
                     </Form>
                 </section>
-                <section className="space-y-3 mx-auto max-w-3xl">
+                <section className="space-y-6 mx-auto max-w-3xl">
                     {messages.map((message, index) => (
                         <div
                             key={index}
