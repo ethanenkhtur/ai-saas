@@ -20,6 +20,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import FreeTierCounter from "./usage-counter";
 
 const items = [
 	{
@@ -47,7 +48,7 @@ const items = [
 	},
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ apiLimitCount }: { apiLimitCount: number }) {
 	const pathname = usePathname();
 
 	return (
@@ -57,7 +58,7 @@ export function AppSidebar() {
 					<SidebarMenuItem>
 						<Link
 							href={"/dashboard"}
-							className="flex items-center ml-3 px-2 py-4"
+							className="ml-3 flex items-center px-2 py-4"
 						>
 							<Image
 								src={"/logo.png"}
@@ -95,7 +96,9 @@ export function AppSidebar() {
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
-			<SidebarFooter />
+			<SidebarFooter>
+				<FreeTierCounter apiLimitCount={apiLimitCount} />
+			</SidebarFooter>
 		</Sidebar>
 	);
 }
