@@ -209,7 +209,7 @@ export default function ImagePage() {
 							No image generated.
 						</p>
 					)}
-					<div className="flex-wrap flex items-stretch justify-center gap-6">
+					<div className="flex flex-wrap items-stretch justify-center gap-6">
 						{images.map((src) => (
 							<Card
 								key={src}
