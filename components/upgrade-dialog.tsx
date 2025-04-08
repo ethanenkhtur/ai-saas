@@ -2,7 +2,13 @@
 
 import { tools } from "@/app/dashboard/page";
 import { Badge } from "./ui/badge";
-import { Dialog, DialogContent, DialogFooter, DialogTitle } from "./ui/dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogTitle,
+} from "./ui/dialog";
 import { useProModel } from "@/hooks/use-pro-model";
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
@@ -21,6 +27,9 @@ export default function UpgradeDialog() {
 						PRO
 					</Badge>
 				</DialogTitle>
+				<DialogDescription>
+					You are out of free usage.
+				</DialogDescription>
 				<div className="flex flex-col gap-y-4">
 					{tools.map((tool) => (
 						<Card
