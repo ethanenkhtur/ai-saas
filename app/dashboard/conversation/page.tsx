@@ -75,8 +75,11 @@ export default function ConversationPage() {
 			// reset form state
 			form.reset();
 		} catch (error: any) {
-			if (error.response.status === 403) proModel.onOpen();
-			else console.error("Error in API request", error);
+			if (error.response.status === 403) {
+				proModel.onOpen();
+			} else console.error("Error in API request", error);
+			form.reset();
+			setMessages([]);
 		} finally {
 			// refreshes server components and re-fetches data without losing client-side state
 			// used for refetching updated usage count data for API Usage Limiter
