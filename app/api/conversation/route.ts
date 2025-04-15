@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
 	try {
 		const client = new OpenAI();
 
-		const messages = await req.json();
+		const messages: [] = await req.json();
 
 		if (!(await UsageEligibility()))
 			return new NextResponse("Pro model is required.", { status: 403 });
