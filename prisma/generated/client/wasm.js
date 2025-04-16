@@ -125,6 +125,15 @@ exports.Prisma.UserApiLimitScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.UserSubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  stripeCustomerId: 'stripeCustomerId',
+  stripeSubscriptionId: 'stripeSubscriptionId',
+  stripePriceId: 'stripePriceId',
+  stripeCurrentPeriodEnd: 'stripeCurrentPeriodEnd'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -135,9 +144,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-  UserApiLimit: 'UserApiLimit'
+  UserApiLimit: 'UserApiLimit',
+  UserSubscription: 'UserSubscription'
 };
 
 /**
