@@ -2,26 +2,22 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 
 import { stripe } from "../../../lib/stripe";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
-import { set } from "zod";
 
-export async function GET() {
+export async function POST() {
 	try {
 		const headerList = await headers();
 		const origin = headerList.get("origin");
 		const settingsUrl = `${origin}/settings`;
 
-		const { userId } = await auth();
 		const user = await currentUser();
 
-		if (!user || !userId)
-			return new NextResponse("Unauthorized", { status: 401 });
-		console.log(user?.id, userId);
+		if (!user) return new NextResponse("Unauthorized", { status: 401 });
 
 		const userSubscription = await prisma.userSubscription.findUnique({
 			where: {
-				userId,
+				userId: user.id,
 			},
 		});
 
@@ -56,7 +52,7 @@ export async function GET() {
 				},
 			],
 			metadata: {
-				userId,
+				userId: user.id,
 			},
 			success_url: settingsUrl,
 			cancel_url: settingsUrl,

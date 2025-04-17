@@ -5,19 +5,29 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
-	const body = await req.text();
-	const signature = (await headers()).get("Stripe-Signature") as string;
+	const rawBody = await req.text();
 
 	let event: Stripe.Event;
 
 	try {
+		const stripeSignature = (await headers()).get(
+			"stripe-signature"
+		) as string;
+
 		event = stripe.webhooks.constructEvent(
-			body,
-			signature,
-			process.env.STRIPE_WEBHOOK_SECRET!
+			rawBody,
+			stripeSignature,
+			process.env.STRIPE_WEBHOOK_SECRET as string
 		);
-	} catch (error: any) {
-		return new NextResponse(`Webhook Error: ${error.message}`, {
+	} catch (error) {
+		const errorMessage =
+			error instanceof Error ? error.message : "Unknown error";
+
+		// On error, log and return the error message.
+		if (error instanceof Error) console.log(error);
+		console.log(`❌ Error message: ${errorMessage}`);
+
+		return NextResponse.json(`Webhook Error: ${errorMessage}`, {
 			status: 400,
 		});
 	}

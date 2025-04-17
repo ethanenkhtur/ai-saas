@@ -14,9 +14,26 @@ import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { Check, Zap } from "lucide-react";
 import { Button } from "./ui/button";
+import axios from "axios";
+import { useState } from "react";
 
 export default function UpgradeDialog() {
+	const [isLoading, setLoading] = useState<boolean>();
 	const proModel = useProModel();
+
+	async function onSubscribe() {
+		try {
+			setLoading(true);
+
+			const response = await axios.post("/api/stripe");
+
+			window.location.href = response.data.url;
+		} catch (error: any) {
+			console.error("STRIPE_CLIENT_WEBHOOK", error);
+		} finally {
+			setLoading(false);
+		}
+	}
 
 	return (
 		<Dialog open={proModel.isOpen} onOpenChange={proModel.onClose}>
@@ -56,7 +73,10 @@ export default function UpgradeDialog() {
 					))}
 				</div>
 				<DialogFooter>
-					<Button className="bg-primary w-full cursor-pointer">
+					<Button
+						onClick={onSubscribe}
+						className="bg-primary w-full cursor-pointer"
+					>
 						Upgrade
 						<Zap className="fill-white" />
 					</Button>
