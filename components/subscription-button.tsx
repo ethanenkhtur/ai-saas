@@ -4,11 +4,9 @@ import { Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function SubscriptionButton(props: { isPro: boolean }) {
 	const [isLoading, setLoading] = useState<boolean>(false);
-	const router = useRouter();
 
 	async function onClick() {
 		try {
@@ -16,7 +14,7 @@ export default function SubscriptionButton(props: { isPro: boolean }) {
 
 			const response = await axios.post("/api/stripe");
 
-			router.replace(response.data.url);
+			window.location.href = response.data.url;
 		} catch (error) {
 			if (error instanceof Error) console.error(error.message);
 
