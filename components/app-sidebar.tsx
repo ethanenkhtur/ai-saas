@@ -44,7 +44,7 @@ const items = [
 	{
 		title: "Settings",
 		icon: Settings,
-		route: "/settings",
+		route: "/dashboard/settings",
 	},
 ];
 

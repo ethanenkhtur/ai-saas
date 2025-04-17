@@ -9,7 +9,7 @@ export async function POST() {
 	try {
 		const headerList = await headers();
 		const origin = headerList.get("origin");
-		const settingsUrl = `${origin}/settings`;
+		const settingsUrl = `${origin}/dashboard/settings`;
 
 		const user = await currentUser();
 
