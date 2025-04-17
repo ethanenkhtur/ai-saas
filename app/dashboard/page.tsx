@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { ArrowRight, ImageIcon, MessageSquare } from "lucide-react";
+import { ArrowRight, ImageIcon, MessageSquare, Settings } from "lucide-react";
 import Link from "next/link";
 
 export const tools = [
@@ -19,6 +19,13 @@ export const tools = [
 		href: "/dashboard/image",
 		color: "text-pink-700",
 		bgColor: "bg-pink-700/10",
+	},
+	{
+		title: "Settings",
+		icon: Settings,
+		href: "/dashboard/settings",
+		color: "text-gray-700",
+		bgColor: "bg-gray-700/10",
 	},
 ];
 

@@ -51,7 +51,14 @@ function Button({
 	return (
 		<Comp
 			data-slot="button"
+<<<<<<< HEAD
 			className={cn(buttonVariants({ variant, size, className }))}
+=======
+			className={cn(
+				buttonVariants({ variant, size, className }),
+				"cursor-pointer"
+			)}
+>>>>>>> feature/stripe-from-tutorial
 			{...props}
 		/>
 	);
