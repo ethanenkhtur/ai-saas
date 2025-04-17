@@ -16,12 +16,10 @@ import { Check, Zap } from "lucide-react";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function UpgradeDialog() {
 	const [isLoading, setLoading] = useState<boolean>();
 	const proModel = useProModel();
-	const router = useRouter();
 
 	async function onSubscribe() {
 		try {
@@ -29,7 +27,7 @@ export default function UpgradeDialog() {
 
 			const response = await axios.post("/api/stripe");
 
-			router.replace(response.data.url);
+			window.location.href = response.data.url;
 		} catch (error: any) {
 			console.error("STRIPE_CLIENT_WEBHOOK", error);
 		} finally {
