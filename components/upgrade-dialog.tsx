@@ -76,6 +76,7 @@ export default function UpgradeDialog() {
 					<Button
 						onClick={onSubscribe}
 						className="bg-primary w-full cursor-pointer"
+						disabled={isLoading}
 					>
 						Upgrade
 						<Zap className="fill-white" />

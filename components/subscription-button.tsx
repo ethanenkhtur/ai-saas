@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import axios from "axios";
 import { useState } from "react";
 
-export default function SubscriptionButton(props: { isPro: boolean }) {
+export default function SubscriptionButton({ isPro = false }) {
 	const [isLoading, setLoading] = useState<boolean>(false);
 
 	async function onClick() {
@@ -26,12 +26,12 @@ export default function SubscriptionButton(props: { isPro: boolean }) {
 
 	return (
 		<Button
-			variant={props.isPro ? "default" : "premium"}
+			variant={isPro ? "default" : "premium"}
 			onClick={onClick}
 			disabled={isLoading}
 		>
-			{props.isPro ? "Manage subscription" : "Upgrade"}
-			{!props.isPro && <Zap />}
+			{isPro ? "Manage subscription" : "Upgrade"}
+			{!isPro && <Zap />}
 		</Button>
 	);
 }

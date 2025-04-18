@@ -48,7 +48,7 @@ const items = [
 	},
 ];
 
-export function AppSidebar({ apiLimitCount }: { apiLimitCount: number }) {
+export function AppSidebar({ apiLimitCount = 0, isPro = false }) {
 	const pathname = usePathname();
 
 	return (
@@ -97,7 +97,7 @@ export function AppSidebar({ apiLimitCount }: { apiLimitCount: number }) {
 				</SidebarGroup>
 			</SidebarContent>
 			<SidebarFooter>
-				<FreeTierCounter apiLimitCount={apiLimitCount} />
+				<FreeTierCounter isPro={isPro} apiLimitCount={apiLimitCount} />
 			</SidebarFooter>
 		</Sidebar>
 	);
