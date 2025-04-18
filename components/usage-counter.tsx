@@ -8,11 +8,9 @@ import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useProModel } from "@/hooks/use-pro-model";
 
-export default function FreeTierCounter({
-	apiLimitCount = 0,
-}: {
-	apiLimitCount: number;
-}) {
+export default function FreeTierCounter({ apiLimitCount = 0, isPro = false }) {
+	if (isPro) return null;
+
 	const proModel = useProModel();
 
 	return (
