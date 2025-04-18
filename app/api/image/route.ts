@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { NextRequest, NextResponse } from "next/server";
 import { incrementApiUsage, UsageEligibility } from "@/lib/api_limit";
+import checkSubscription from "@/lib/checkSubscription";
 
 export async function POST(req: NextRequest) {
 	try {
@@ -8,7 +9,10 @@ export async function POST(req: NextRequest) {
 
 		const { prompt, amount, resolution } = await req.json();
 
-		if (!(await UsageEligibility()))
+		const freeTrial = await UsageEligibility();
+		const isPro = await checkSubscription();
+
+		if (!freeTrial && !isPro)
 			return new NextResponse("Pro model is required.", { status: 403 });
 
 		const response = await openai.images.generate({
@@ -18,7 +22,7 @@ export async function POST(req: NextRequest) {
 			size: resolution,
 		});
 
-		await incrementApiUsage();
+		if (!isPro) await incrementApiUsage();
 
 		return NextResponse.json(response.data, { status: 200 });
 	} catch (error: any) {
