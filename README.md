@@ -9,3 +9,4 @@
 - [ ] Change model output to stream the response; Check NextJS Streaming docs
 - [ ] Try Server Actions out instead of API endpoints
 - [ ] Optimize React Hook Form
+- [ ] Include Suspense components to not load unchanging components
