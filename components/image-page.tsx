@@ -31,10 +31,13 @@ import {
 	amountOptions,
 	resolutionOptions,
 } from "@/app/dashboard/image/constants";
+import { useProModel } from "@/hooks/use-pro-model";
+import { toast } from "sonner";
 
 export default function ImageGeneration() {
 	const [images, setImages] = useState<string[]>([]);
 	const router = useRouter();
+	const proModel = useProModel();
 
 	// creating zod form schema to validate input
 	const formSchema = z.object({
@@ -76,8 +79,12 @@ export default function ImageGeneration() {
 
 			// reset form state
 			form.reset();
-		} catch (error) {
-			console.error("Error generating images:", error);
+		} catch (error: any) {
+			if (error.response.status === 403) {
+				proModel.onOpen();
+			} else {
+				toast.error("Something went wrong");
+			}
 		} finally {
 			// refreshes server components and re-fetches data without losing client-side state
 			// used for refetching updated usage count data for API Usage Limiter

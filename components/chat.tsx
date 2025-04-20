@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function ChatPage() {
 	const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
@@ -76,7 +77,8 @@ export default function ChatPage() {
 		} catch (error: any) {
 			if (error.response.status === 403) {
 				proModel.onOpen();
-			} else console.error("Error in API request", error);
+			} else toast.error("Something went wrong");
+
 			form.reset();
 			setMessages([]);
 		} finally {
