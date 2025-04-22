@@ -1,5 +1,11 @@
-import { Button } from "@/components/ui/button";
+import LandingHero from "@/components/landing-hero";
+import LandingNavbar from "@/components/landing-navbar";
 
 export default function Landing() {
-	return <Button size={"lg"}>Click</Button>;
+	return (
+		<>
+			<LandingNavbar />
+			<LandingHero />
+		</>
+	);
 }
