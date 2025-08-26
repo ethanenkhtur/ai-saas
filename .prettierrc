@@ -1,5 +1,5 @@
 {
-  "arrowParens": "always",
+  "arrowParens": "avoid",
   "bracketSpacing": true,
   "endOfLine": "lf",
   "htmlWhitespaceSensitivity": "css",
@@ -19,7 +19,6 @@
   "embeddedLanguageFormatting": "auto",
   "vueIndentScriptAndStyle": false,
   "experimentalTernaries": false,
-  "filepath": "/Users/ethanenkhtur/repos/ai-saas/",
   "parser": "typescript",
   "plugins": ["prettier-plugin-tailwindcss"]
 }
